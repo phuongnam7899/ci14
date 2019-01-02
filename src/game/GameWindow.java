@@ -1,6 +1,7 @@
 package game;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -13,6 +14,7 @@ public class GameWindow extends JFrame {
     public static boolean isDownPress;
     public static boolean isLeftPress;
     public static boolean isRightPress;
+    public static boolean isFirePress;
 
     //methods
 
@@ -45,6 +47,9 @@ public class GameWindow extends JFrame {
                 if(e.getKeyCode() == KeyEvent.VK_D){
                     isRightPress = true;
                 }
+                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                    isFirePress = true;
+                }
             }
 
             @Override
@@ -57,10 +62,13 @@ public class GameWindow extends JFrame {
                     isDownPress = false;
                 }
                 if(e.getKeyCode() == KeyEvent.VK_A){
-                    isLeftPress =false;
+                    isLeftPress = false;
                 }
                 if(e.getKeyCode() == KeyEvent.VK_D){
                     isRightPress = false;
+                }
+                if(e.getKeyCode() == KeyEvent.VK_SPACE){
+                    isFirePress = false;
                 }
             }
         });
@@ -70,13 +78,15 @@ public class GameWindow extends JFrame {
     private void creatGamePanel() {
 //        GamePanel panel = new GamePanel();
         this.gamePanel = new GamePanel();
+        this.gamePanel.setPreferredSize(new Dimension(800,600));
         this.add(this.gamePanel);
-
+        this.pack();
     }
 
 
     private void setupWindow() {
-        this.setSize(800,600);
+//        this.setSize(800,600);
+
         this.setTitle("touhou");
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
