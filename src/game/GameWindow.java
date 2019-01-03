@@ -34,7 +34,6 @@ public class GameWindow extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                //TODO:an phim
                 if(e.getKeyCode() == KeyEvent.VK_W){
                     isUpPress = true;
                 }
@@ -54,7 +53,6 @@ public class GameWindow extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                //TODO:nha phim
                 if(e.getKeyCode() == KeyEvent.VK_W){
                     isUpPress = false;
                 }
@@ -76,7 +74,6 @@ public class GameWindow extends JFrame {
 
 
     private void creatGamePanel() {
-//        GamePanel panel = new GamePanel();
         this.gamePanel = new GamePanel();
         this.gamePanel.setPreferredSize(new Dimension(800,600));
         this.add(this.gamePanel);
@@ -85,8 +82,6 @@ public class GameWindow extends JFrame {
 
 
     private void setupWindow() {
-//        this.setSize(800,600);
-
         this.setTitle("touhou");
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -2,25 +2,18 @@ package game;
 
 import tklibs.SpriteUtils;
 
-import java.awt.*;
-
-import java.awt.image.BufferedImage;
-
-public class PlayerBullet {
-    BufferedImage image;
-    Vector2D position;
-//    float x;
-//    float y;
+public class PlayerBullet extends GameObject{
 
     public PlayerBullet() {
+        super(); // this.position = new Vector2D()
         this.image = SpriteUtils.loadImage("assets/images/player-bullets/a/0.png");
+        this.velocity.set(0, -7);
     }
 
-    public void render(Graphics g) {
-        g.drawImage(this.image, (int)this.position.x, (int)this.position.y, null);
-    }
-
+    @Override
     public void run() {
-        this.position.subtract(0,7);
+        super.run();
+//        this.position.add(0, -7);
     }
+
 }

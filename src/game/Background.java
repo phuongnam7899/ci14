@@ -5,31 +5,29 @@ import tklibs.SpriteUtils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Background {
-
-    //attributes
-
-    BufferedImage image;
-    Vector2D position ;
-//    float x;
-//    float y;
+public class Background extends GameObject{
 
     //methods
 
+    //set-up b-ground
     public Background(){
+        super();
         this.image = SpriteUtils.loadImage("assets/images/background/0.png");
-        this.position = new Vector2D(0,600-this.image.getHeight());
-//        this.x = 0;
-//        this.y = 600 - this.image.getHeight();
+        this.position.set(0,600 -this.image.getHeight());
+        this.velocity.set(0,1);
     }
 
-    public void render(Graphics g){
-        g.drawImage(this.image,(int)this.position.x,(int)this.position.y,null);
-    }
+    //b-ground up
+    @Override
     public void run(){
-        if(this.position.y < 0) {
-//            this.position.y++;
-            this.position.add(0,1);
+        super.run();
+        this.limitPosition();
+    }
+
+
+    public void limitPosition() {
+        if (this.position.y >= 0){
+            this.position.y = 0;
         }
     }
 }
