@@ -1,29 +1,36 @@
 package game;
 
+import game.renderer.Animation;
+import game.renderer.SingleImageRenderer;
 import tklibs.SpriteUtils;
 
-public class Player extends GameObject {
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+public class Player extends GameObject{
     Sphere sphereLeft;
-    Sphere shereRight;
+    Sphere sphereRight;
 
-    //methods
-
-    //setup player
     public Player() {
         super();
-        this.image = SpriteUtils.loadImage("assets/images/players/straight/0.png");
-        this.position.set(200,400);
-        this.shereRight = new Sphere();
+//        BufferedImage image = SpriteUtils.loadImage("assets/images/players/straight/0.png");
+//        this.renderer = new SingleImageRenderer(image);
+        ArrayList<BufferedImage> images = new ArrayList<>();
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/0.png"));
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/1.png"));
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/2.png"));
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/3.png"));
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/4.png"));
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/5.png"));
+        images.add(SpriteUtils.loadImage("assets/images/players/straight/6.png"));
+        this.renderer = new Animation(images);
+        this.position.set(200, 400);
         this.sphereLeft = new Sphere();
+        this.sphereRight = new Sphere();
         this.updateSpherePosition();
     }
 
-    private void updateSpherePosition() {
-        this.sphereLeft.position.set(this.position).add(-20,30);
-        this.shereRight.position.set(this.position).add(30,30);
-    }
-
-    //player run
     @Override
     public void run() {
         super.run();
@@ -33,7 +40,13 @@ public class Player extends GameObject {
         this.updateSpherePosition();
     }
 
-    //player fire
+    private void updateSpherePosition() {
+        this.sphereLeft.position.set(this.position)
+                    .add(-20, 30);
+        this.sphereRight.position.set(this.position)
+                    .add(30, 30);
+    }
+
     int count; // TODO: continue editing
     private void fire() {
         count++;
@@ -54,22 +67,22 @@ public class Player extends GameObject {
 
     private void limitPosition() {
         if (this.position.y < 0) {
-            this.position.y = 0;
+            this.position.set(this.position.x, 0);
         }
-        if (this.position.y > 600 - this.image.getHeight()) {
-            this.position.y = 600 - this.image.getHeight();
+        if (this.position.y > 600 - 48) {
+            this.position.set(this.position.x, 600 - 48);
         }
         if (this.position.x < 0) {
-            this.position.x = 0;
+            this.position.set(0, this.position.y);
         }
-        if (this.position.x > 384 - this.image.getWidth()) {
-            this.position.x = 384 - this.image.getWidth();
+        if (this.position.x > 384 - 32) {
+            this.position.set(384 - 32, this.position.y);
         }
     }
 
     private void move() {
-        float vX=0;
-        float vY=0;
+        float vX = 0;
+        float vY = 0;
         if (GameWindow.isUpPress) {
             vY = -5;
         }
@@ -82,6 +95,6 @@ public class Player extends GameObject {
         if (GameWindow.isRightPress) {
             vX = 5;
         }
-        this.velocity.set(vX,vY).setLength(5);
+        this.velocity.set(vX, vY).setLength(5);
     }
 }

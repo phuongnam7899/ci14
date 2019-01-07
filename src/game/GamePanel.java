@@ -1,50 +1,45 @@
 package game;
 
+import game.enemy.Enemy;
 import tklibs.SpriteUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
-    //methods
 
-    //create background and player
-    public GamePanel(){
+    public GamePanel() {
         new Background();
         new Player();
+        Enemy enemy = new Enemy();
+        enemy.position.set(200, 100);
     }
 
-    // draw b-ground and player
-    @Override
-    public void paint(Graphics g){
-        GameObject.renderAll(g);
-    }
-
-    //run game
-    public void gameLoop(){
+    public void gameLoop() {
         long lastLoop = 0;
-        long delay = 1000/60;
-        while (true){
+        long delay = 1000 / 60;
+        while (true) {
             long currentTime = System.currentTimeMillis();
-            if(currentTime - lastLoop > delay){
-                this.runAll();
-                this.renderAll();
+            if (currentTime - lastLoop > delay) {
+                this.runAll(); // ~logic
+                this.renderAll(); // ~render / hien thi
                 lastLoop = currentTime;
             }
         }
     }
 
-    //logic process
-    private void runAll() {
+    public void runAll() {
         GameObject.runAll();
     }
 
-    //graphics process
-    private void renderAll() {
-        this.repaint();
+    public void renderAll() {
+        this.repaint(); // ~ paint()
     }
 
+    @Override
+    public void paint(Graphics g) {
+        GameObject.renderAll(g);
+    }
 }
