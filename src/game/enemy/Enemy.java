@@ -1,14 +1,19 @@
 package game.enemy;
 
-import game.Background;
+import game.FrameCounter;
 import game.GameObject;
+import game.physics.BoxColider;
+import game.physics.Physics;
 import game.renderer.Animation;
 import tklibs.SpriteUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Enemy extends GameObject {
+public class Enemy extends GameObject implements Physics {
+
+    BoxColider boxColider;
+    FrameCounter fireCounter;
 
     public Enemy(){
         this.position.set(142,50);
@@ -19,6 +24,8 @@ public class Enemy extends GameObject {
         images.add(SpriteUtils.loadImage("assets/images/enemies/level0/pink/2.png"));
         images.add(SpriteUtils.loadImage("assets/images/enemies/level0/pink/3.png"));
         this.renderer = new Animation(images);
+        this.boxColider = new BoxColider(this.position,30,30);
+        this.fireCounter = new FrameCounter(20);
     }
 
     @Override
@@ -33,15 +40,18 @@ public class Enemy extends GameObject {
         this.fire();
     }
 
-    int count ;
     private void fire(){
-        this.count++;
-        if (this.count > 20){
+        if (this.fireCounter.run() && this.isActive){
             EnemyBullet bullet = new EnemyBullet();
             bullet.position.set(this.position);
-            this.count = 0;
+            this.fireCounter.reset();
 
         }
 
+    }
+
+    @Override
+    public BoxColider getBoxColider() {
+        return this.boxColider;
     }
 }

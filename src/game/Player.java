@@ -1,5 +1,7 @@
 package game;
 
+import game.physics.BoxColider;
+import game.physics.Physics;
 import game.renderer.Animation;
 import game.renderer.SingleImageRenderer;
 import tklibs.SpriteUtils;
@@ -8,9 +10,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player extends GameObject{
+public class Player extends GameObject implements Physics {
     Sphere sphereLeft;
     Sphere sphereRight;
+    BoxColider boxColider;
+    FrameCounter fireCounter;
+    int hp;
 
     public Player() {
         super();
@@ -29,7 +34,11 @@ public class Player extends GameObject{
         this.sphereLeft = new Sphere();
         this.sphereRight = new Sphere();
         this.updateSpherePosition();
+        this.boxColider = new BoxColider(this.position, 32, 48);
+        this.fireCounter = new FrameCounter(20);
+        this.hp = 3;
     }
+
 
     @Override
     public void run() {
@@ -40,6 +49,19 @@ public class Player extends GameObject{
         this.updateSpherePosition();
     }
 
+    public void hpDecrease(){
+        this.hp--;
+        System.out.println(this.hp);
+        if (this.hp <= 0){
+            this.deactive();
+        }
+    }
+
+    public void deActiveSphere(){
+        this.sphereLeft.deactive();
+        this.sphereRight.deactive();
+    }
+
     private void updateSpherePosition() {
         this.sphereLeft.position.set(this.position)
                     .add(-20, 30);
@@ -47,10 +69,8 @@ public class Player extends GameObject{
                     .add(30, 30);
     }
 
-    int count; // TODO: continue editing
     private void fire() {
-        count++;
-        if(count > 20) {
+        if(this.fireCounter.run()) {
             if(GameWindow.isFirePress) {
                 float startAngle =  -(float)Math.PI / 4;
                 float endAngle = -3 * (float)Math.PI / 4;
@@ -59,8 +79,9 @@ public class Player extends GameObject{
                     PlayerBullet bullet = new PlayerBullet();
                     bullet.position.set(this.position.x - 15, this.position.y);
                     bullet.velocity.setAngle(startAngle + offset * i);
-                    this.count = 0;
+                    this.fireCounter.reset();
                 }
+
             }
         }
     }
@@ -96,5 +117,11 @@ public class Player extends GameObject{
             vX = 5;
         }
         this.velocity.set(vX, vY).setLength(5);
+    }
+
+
+    @Override
+    public BoxColider getBoxColider() {
+        return this.boxColider;
     }
 }
